@@ -30,10 +30,11 @@ nodeDegreeTemp=np.array(nodeDegree)
 while 1:
     selectList=np.where(nodeDegreeTemp>0)
     selectedLink=selectList[0][np.random.randint(len(selectList[0]),size=2)]
-    scalefreeNetwork.add_edge(*tuple(selectedLink))
-    nodeDegreeTemp[selectedLink]-=1
-    if sum(nodeDegreeTemp)==0:
-        break
+    if selectedLink[0]!=selectedLink[1]:
+        scalefreeNetwork.add_edge(*tuple(selectedLink))
+        nodeDegreeTemp[selectedLink]-=1
+        if sum(nodeDegreeTemp>0)<=1:
+            break
 #nx.draw_networkx(scalefreeNetwork)
 lcc_node = max(nx.connected_components(scalefreeNetwork),key=len)
 scalefreeNetworkLcc=scalefreeNetwork.subgraph(lcc_node)
