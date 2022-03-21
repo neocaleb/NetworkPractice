@@ -28,11 +28,11 @@ log_data_std4gene=np.std(log_data,axis=1)
 log_data_CV4gene=log_data_std4gene/log_data_mean4gene
 sortIndex=np.argsort(log_data_CV4gene)
 sortIndex=sortIndex[::-1]
-highCutoff=100
+highCutoff=1000
 #Calculation correlation matrix
-log_data_corr4gene=np.corrcoef(log_data[sortIndex[0:highCutoff],:])
+log_data_corr4gene=np.corrcoef(log_data[sortIndex[:highCutoff],:])
 np.fill_diagonal(log_data_corr4gene,0)
-corrCutoff=0.7
+corrCutoff=0.6
 log_data_corr4gene[np.abs(log_data_corr4gene)<corrCutoff]=0
 #Make a network
 corrNetwork4gene=nx.to_networkx_graph(log_data_corr4gene,create_using=nx.Graph)
@@ -53,11 +53,11 @@ log_data_std4cell=np.std(log_data,axis=0)
 log_data_CV4cell=log_data_std4cell/log_data_mean4cell
 sortIndex=np.argsort(log_data_CV4cell)
 sortIndex=sortIndex[::-1]
-highCutoff=100
+highCutoff=200
 #Calculation correlation matrix
 log_data_corr4cell=np.corrcoef(np.transpose(log_data[:,sortIndex[0:highCutoff]]))
 np.fill_diagonal(log_data_corr4cell,0)
-corrCutoff=0.4
+corrCutoff=0.35
 log_data_corr4cell[np.abs(log_data_corr4cell)<corrCutoff]=0
 #Make a network
 corrNetwork4cell=nx.to_networkx_graph(log_data_corr4cell,create_using=nx.Graph)

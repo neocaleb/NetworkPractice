@@ -13,7 +13,7 @@ gene_name=np.array(data_table.index)
 log_data=np.log2(data_matrix+1)
 
 #Gene filtering & Cell filtering
-existenceCutoff=0.5
+existenceCutoff=0.2
 geneFilter=np.sum(log_data>1,1)/len(log_data[0])>existenceCutoff
 cellFilter=np.sum(log_data>1,0)/len(log_data)>existenceCutoff
 log_data=log_data[geneFilter,:]
@@ -38,7 +38,7 @@ for i in range(laggingRange):
 
 lagCorr4gene=np.max(lagCorr4geneTotal,axis=2)
 #Make a network
-corrCutoff=0.5
+corrCutoff=0.7
 lagCorrNetwork4gene=nx.from_numpy_matrix(lagCorr4gene>corrCutoff,create_using=nx.DiGraph)
 #Node labeling
 node_labels={};
