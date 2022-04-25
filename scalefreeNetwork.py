@@ -26,13 +26,23 @@ for i in range(nodeSize):
             break
 
 scalefreeNetwork=nx.empty_graph(nodeSize)
+sortIndex=np.argsort(nodeDegree)
+sortIndex=sortIndex[::-1]
 nodeDegreeTemp=np.array(nodeDegree)
-while 1:
-    selectList=np.where(nodeDegreeTemp>0)
-    selectedLink=selectList[0][np.random.randint(len(selectList[0]),size=2)]
-    if selectedLink[0]!=selectedLink[1]:
-        scalefreeNetwork.add_edge(*tuple(selectedLink))
+for i in range(nodeSize):
+    selectedNode=sortIndex[i]
+    if nodeDegreeTemp[selectedNode]:
+        selectList=list(np.where(nodeDegreeTemp>0)[0])
+        selectList.remove([selectedNode])
+        selectList=np.array(selectList)
+        if nodeDegreeTemp[selectedNode]>len(selectList):
+            selectedLink=selectList[np.random.choice(len(selectList),len(selectList),replace=False)]
+        else:
+            selectedLink=selectList[np.random.choice(len(selectList),nodeDegreeTemp[selectedNode],replace=False)]
+        for j in range(len(selectedLink)):
+            scalefreeNetwork.add_edge(*(selectedNode,selectedLink[j]))
         nodeDegreeTemp[selectedLink]-=1
+        nodeDegreeTemp[selectedNode]=0
         if sum(nodeDegreeTemp>0)<=1:
             break
 #nx.draw_networkx(scalefreeNetwork)
@@ -41,7 +51,8 @@ scalefreeNetworkLcc=scalefreeNetwork.subgraph(lcc_node)
 nx.draw_networkx(scalefreeNetworkLcc)
 #Degree distribution
 degree_sequence = [d for n, d in scalefreeNetwork.degree()]
-plt.hist(degree_sequence,bins='auto',density=1)
+plt.hist(degree_sequence,bins='auto')
+plt.xscale("log")
 
 #Generate Random Network
 edgeSize=scalefreeNetwork.number_of_edges()

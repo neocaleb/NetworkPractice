@@ -39,5 +39,5 @@ for i in range(len(nSwapRange)):
 
 plt.plot(nSwapRange/nodeSize,np.mean(CPL,1)/max(np.mean(CPL,1)))
 plt.plot(nSwapRange/nodeSize,np.mean(CC,1)/max(np.mean(CC,1)))
-plt.xscale('log')
+#plt.xscale('log')
 plt.show()
