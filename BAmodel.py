@@ -67,7 +67,7 @@ for addEdgeNumber in range(3):
     for i in range(nodeSize-startNodeNumber):
         currentNodes=list(BAnetwork.nodes)
         degree_sequence = [d for n, d in BAnetwork.degree()]
-        selectedNodes=np.random.choice(len(currentNodes),addEdgeNumber,replace=False,p=np.array(degree_sequence)/sum(degree_sequence))
+        selectedNodes=np.random.choice(len(currentNodes),addEdgeNumber,replace=False,p=np.array(degree_sequence)**alpha/sum(np.array(degree_sequence)**alpha))
         for nodes in selectedNodes:
             BAnetwork.add_edge(nodes,i+startNodeNumber)        
     
